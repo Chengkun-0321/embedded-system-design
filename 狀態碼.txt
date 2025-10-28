@@ -1,0 +1,65 @@
+太好了 🙌 我幫你整理一份 常用 HTTP 狀態碼速查表，你可以直接拿去當專案筆記：
+
+⸻
+
+🌐 常用 HTTP 狀態碼速查表
+
+✅ 成功 (2xx)
+
+狀態碼	名稱	說明	使用情境
+200 OK	請求成功	回傳正常結果	GET 資料成功
+201 Created	已建立	成功建立新資源	POST 新增資料
+204 No Content	成功但無內容	請求成功，但伺服器沒有回傳內容	DELETE 成功刪除
+
+
+⸻
+
+🔄 重新導向 (3xx)
+
+狀態碼	名稱	說明	使用情境
+301 Moved Permanently	永久轉址	資源已永久移動	網址結構改版
+302 Found	暫時轉址	資源暫時移動	需要臨時導向
+304 Not Modified	未修改	資源沒變化，可用快取	瀏覽器快取優化
+
+
+⸻
+
+⚠️ 客戶端錯誤 (4xx)
+
+狀態碼	名稱	說明	使用情境
+400 Bad Request	錯誤請求	客戶端請求格式錯誤	傳錯參數
+401 Unauthorized	未授權	需要登入或 Token	使用者未登入
+403 Forbidden	禁止存取	有登入但沒權限	權限不足
+404 Not Found	找不到	請求資源不存在	網頁或 API 不存在
+429 Too Many Requests	請求過多	客戶端請求太頻繁	防止爬蟲或 DDoS
+
+
+⸻
+
+❌ 伺服器錯誤 (5xx)
+
+狀態碼	名稱	說明	使用情境
+500 Internal Server Error	伺服器錯誤	一般性錯誤	未預期的 bug
+502 Bad Gateway	錯誤閘道	代理伺服器收到無效回應	API gateway 錯誤
+503 Service Unavailable	服務不可用	伺服器暫時無法使用	系統維護中
+504 Gateway Timeout	閘道超時	請求等待太久	第三方 API 無回應
+
+
+⸻
+
+🚀 Express 實作範例
+
+// 成功
+res.status(200).json({ success: true, data: "OK" });
+
+// 新增成功
+res.status(201).json({ success: true, id: 123 });
+
+// 找不到
+res.status(404).json({ success: false, error: "Not Found" });
+
+// 未授權
+res.status(401).json({ success: false, error: "Unauthorized" });
+
+// 伺服器錯誤
+res.status(500).json({ success: false, error: "Internal Server Error" });

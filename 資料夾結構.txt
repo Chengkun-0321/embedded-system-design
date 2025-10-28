@@ -1,0 +1,35 @@
+HW2/                 # 專案根目錄
+├── web/                   # 後端 (Node.js + Express API)
+│   ├── node_modules/      # 後端套件 (自動生成)
+│   ├── app.js             # Express 伺服器入口
+│   ├── package.json       # 後端相依套件 & scripts
+│   └── package-lock.json  # 後端套件版本鎖定
+│
+├── web-mgt/               # 前端 (React)
+│   ├── node_modules/      # 前端套件 (自動生成)
+│   ├── public/            # 靜態檔案 (index.html, 圖片等)
+│   ├── src/               # React 原始碼
+│   │   ├── App.js         # 主畫面組件
+│   │   ├── index.js       # React 入口檔案
+│   │   └── components/    # 可放自訂 React 元件
+│   ├── package.json       # 前端相依套件 & scripts (含 proxy)
+│   └── package-lock.json  # 前端套件版本鎖定
+│
+├── node_modules/          # root 用到的套件 (例如 concurrently)
+├── package.json           # root 的 scripts (同時啟動前後端)
+└── package-lock.json      # root 套件版本鎖定
+
+
+📌 說明
+• web/
+  • 負責 API
+  • 用 Express 建立後端服務
+  • npm run dev → 自動重啟（nodemon）
+  • npm start → 正式模式
+• web-mgt/
+  • 負責網頁 UI (React)
+  • npm start → 跑開發伺服器 (http://localhost:3000)
+  • proxy 指到 http://localhost:4000 來串接後端
+• root (HW2/)
+  • 用 concurrently 同時啟動前後端
+  • npm run dev → 開發模式：前端+後端一起跑

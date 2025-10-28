@@ -1,0 +1,10 @@
+{
+  "name": "hw2",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently -n web,web-mgt \"npm run dev --prefix web\" \"npm start --prefix web-mgt\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}

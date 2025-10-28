@@ -1,0 +1,11 @@
+•單獨跑後端:
+cd backend
+npm run dev   # 自動重啟
+npm start     # 正式模式
+
+•單獨跑前端:
+cd frontend
+npm start
+
+同時跑前後端 (在 root):
+npm run dev
