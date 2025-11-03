@@ -12,10 +12,10 @@ function NavigationBar({ username }) {
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {/* ✅ 導覽列靠左 (me-auto = margin-end auto) */}
+          {/* 導覽列靠左 (me-auto = margin-end auto) */}
           <Nav className="me-auto align-items-center">
             <Nav.Link as={Link} to="/">首頁</Nav.Link>
-            <Nav.Link as={Link} to="/page1">功能一服務</Nav.Link>
+            <Nav.Link as={Link} to="/page1">商品搜尋服務</Nav.Link>
             <Nav.Link as={Link} to="/page2">功能二服務</Nav.Link>
           </Nav>
         </Navbar.Collapse>
