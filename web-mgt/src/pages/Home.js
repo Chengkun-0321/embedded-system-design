@@ -19,7 +19,7 @@ function Home() {
 
   return (
     <Container className="mt-5 text-center">
-      <h1>歡迎來到我的網站！</h1>
+      <h1>歡迎來到 商品搜尋與購物清單系統 網站！</h1>
       {username && (
         <p className="text-secondary">
           Hi, {username} 👋 歡迎回來！
