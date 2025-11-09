@@ -48,7 +48,7 @@ function NavigationBar({ username }) {
                 to="/page2"
                 className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
               >
-                功能二服務
+                購物車服務
               </NavLink>
             </li>
           </ul>

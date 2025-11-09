@@ -5,43 +5,42 @@ HW2/                 # 專案根目錄
 │   ├── app.js             # Express 伺服器入口 (包含 /api/username, /api/search 等路由)
 │   ├── package.json       # 後端相依套件 & scripts
 │   ├── package-lock.json  # 後端套件版本鎖定
-│   └── data/
-│       └── 0_20000.csv    # 搜尋資料來源 (CSV)
-│   └── services/
-│       └── searchService.js
+HW2/
+├─ package.json                 # 根目錄腳本與 concurrently 設定（一次啟動前後端）
+├─ README.md                    # 專案說明（執行方式、API、技術與結構）
+├─ 資料夾結構.txt               # 本檔，帶註解的資料夾樹
+├─ 執行指令.txt                 #（可選）個人快速筆記
+├─ 狀態碼.txt                   #（可選）狀態碼對照或備忘
+├─ web/                         # 後端（Node.js + Express）
+│  ├─ package.json              # 後端相依與 scripts（nodemon dev / node start）
+│  ├─ app.js                    # 主要伺服器：中介層日誌、API 路由、啟動 4000 埠
+│  ├─ data/
+│  │  └─ 0_20000.csv           # 商品資料來源（CSV）
+│  └─ services/                 # 後端服務模組
+│     ├─ searchService.js       # CSV 搜尋（nodejieba 斷詞、權重與分頁）
+│     └─ pdfPuppeteer.js        # 以 Puppeteer 將 HTML 轉 PDF（支援中文渲染）
 │
-├── web-mgt/               # 前端 (React)
-│   ├── .DS_Store
-│   ├── node_modules/      # 前端套件 (自動生成)
-│   ├── public/            # 靜態檔案 (index.html, manifest, robots)
-│   │   ├── index.html
-│   │   ├── manifest.json
-│   │   └── robots.txt
-│   ├── src/               # React 原始碼
-│   │   ├── App.css
-│   │   ├── App.js
-│   │   ├── App.test.js
-│   │   ├── index.css
-│   │   ├── index.js
-│   │   ├── reportWebVitals.js
-│   │   ├── setupTests.js
-│   │   ├── components/
-│   │   │   ├── Footer.js
-│   │   │   ├── index.js
-│   │   │   └── Navbar.js
-│   │   └── pages/
-│   │       ├── Home.js
-│   │       ├── index.js
-│   │       ├── page1.js
-│   │       └── page2.js
-│   ├── package.json       # 前端相依套件 & scripts (含 proxy 到 http://localhost:4000)
-│   └── package-lock.json  # 前端套件版本鎖定
-│
-├── node_modules/          # root 用到的套件 (例如 concurrently)
-├── package.json           # root 的 scripts (同時啟動前後端)
-├── package-lock.json      # root 套件版本鎖定
-├── 執行指令.txt           # 專案啟動與測試說明
-├── 狀態碼.txt             # 回傳或錯誤碼對照
+├─ web-mgt/                     # 前端（React + Bootstrap 5）
+│  ├─ package.json              # CRA 專案設定，含 proxy 指向 http://localhost:4000
+│  ├─ public/
+│  │  ├─ index.html            # CRA HTML 模板
+│  │  ├─ manifest.json         # PWA/Meta 設定
+│  │  └─ robots.txt            # 搜尋引擎爬蟲設定
+│  └─ src/
+│     ├─ index.js              # 入口檔，載入 Bootstrap CSS/JS 與 App
+│     ├─ index.css             # 全域樣式（含 navbar/ footer 主題）
+│     ├─ App.js                # 路由與頁面組合
+│     ├─ components/
+│     │  ├─ Navbar.js          # 原生 Bootstrap Navbar（藏藍主題、active 樣式）
+│     │  └─ Footer.js          # 深藍灰底 + 線條風格 icon（GitHub/Email/LINE）
+│     └─ pages/
+│        ├─ Home.js            # 首頁（說明/導引）
+│        ├─ page1.js           # 商品搜尋頁（呼叫 /api/search）
+│        └─ page2.js           # 購物清單頁（加減數量、刪除、匯出 PDF）
+
+備註：
+- 前端以 `web-mgt/package.json` 之 `proxy` 直連後端 `http://localhost:4000`，開發時可直接呼叫 `/api/...`。
+- 匯出 PDF 走 `/api/export-cart`，後端以 Puppeteer 產生 PDF，較能確保中文字型與表格樣式。
 └── 資料夾結構.txt         # 專案檔案結構（此檔）
 
 

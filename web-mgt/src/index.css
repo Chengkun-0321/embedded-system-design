@@ -12,6 +12,31 @@ code {
     monospace;
 }
 
+/* Footer line icon theme */
+.footer-lineicon {
+  background: #0a223f; /* 深藍灰，與藏藍 navbar 協調 */
+  color: #e6eef7;
+}
+.footer-lineicon .footer-meta.sub { color: inherit; }
+.footer-lineicon a { color: #e6eef7; }
+.footer-lineicon a:hover { color: #ffffff; }
+
+.footer-icons .icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(230,238,247,.25);
+  background: rgba(255,255,255,0.02);
+  transition: all 160ms ease-in-out;
+}
+.footer-icons .icon-link:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(230,238,247,.45);
+}
+.footer-icons svg { display:block; }
+
 /* 藏藍色 navbar 自訂樣式 */
 .navbar-navy {
   background-color: #0b3d91; /* 藏藍 / navy */
