@@ -1,26 +1,60 @@
-import { Navbar, Nav, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import { useEffect } from "react";
 
 function NavigationBar({ username }) {
-  return (
-    <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
-      <Container fluid>
-        {/* 網站標題 */}
-        <Navbar.Brand as={Link} to="/">
-          My Website服務網站（Node Express）
-        </Navbar.Brand>
+  useEffect(() => {
+    // 若尚未在專案其他地方載入 bootstrap 的 JS，建議在 src/index.js 加上：
+    // import 'bootstrap/dist/js/bootstrap.bundle.min';
+  }, []);
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          {/* 導覽列靠左 (me-auto = margin-end auto) */}
-          <Nav className="me-auto align-items-center">
-            <Nav.Link as={Link} to="/">首頁</Nav.Link>
-            <Nav.Link as={Link} to="/page1">商品搜尋服務</Nav.Link>
-            <Nav.Link as={Link} to="/page2">功能二服務</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+  return (
+  <nav className="navbar navbar-expand-lg navbar-dark navbar-navy" aria-label="Main navigation">
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/">My Website服務網站（Node Express）</Link>
+
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon" />
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul className="navbar-nav me-auto">
+            <li className="nav-item">
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+              >
+                首頁
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                to="/page1"
+                className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+              >
+                商品搜尋服務
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                to="/page2"
+                className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+              >
+                功能二服務
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 }
 

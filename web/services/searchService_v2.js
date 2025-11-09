@@ -1,4 +1,4 @@
-// services/searchService_v1.js.js
+// services/searchService_v2.js
 const fs = require("fs");
 const csv = require("csv-parser");
 const jieba = require("nodejieba");
@@ -52,13 +52,17 @@ function searchFromCSV(keyword, page = 1, pageSize = 24) {
       .on("data", (row) => {
         let score = 0;
         for (const token of tokens) {
+          let maxFieldScore = 0;
           const tokenLower = token.toLowerCase();
+
           for (const field in weights) {
             const value = (row[field] || "").toLowerCase();
             if (value.includes(tokenLower)) {
-              score += weights[field];
+              maxFieldScore = Math.max(maxFieldScore, weights[field]);
             }
           }
+          // 每個 token 只計算最高的欄位分數
+          score += maxFieldScore;
         }
 
         if (score > 0) {
@@ -67,7 +71,12 @@ function searchFromCSV(keyword, page = 1, pageSize = 24) {
         }
       })
       .on("end", () => {
-        results.sort((a, b) => b._score - a._score);
+        results.sort((a, b) => {
+          if (b._score !== a._score) {
+            return b._score - a._score;
+          }
+          return (a.categories?.length || 100) - (b.categories?.length || 100);
+        });
 
         const total = results.length;
         const totalPages = Math.ceil(total / pageSize);

@@ -11,3 +11,35 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* 藏藍色 navbar 自訂樣式 */
+.navbar-navy {
+  background-color: #0b3d91; /* 藏藍 / navy */
+}
+.navbar-navy .navbar-brand,
+.navbar-navy .nav-link,
+.navbar-navy .navbar-text,
+.navbar-navy .dropdown-item {
+  color: #ffffff; /* 保持白色文字 */
+}
+.navbar-navy .nav-link:hover,
+.navbar-navy .dropdown-item:hover {
+  color: #e6f0ff;
+}
+
+/* active link 樣式：讓當前分頁的 nav link 背景變深並有圓角與過渡 */
+.navbar-navy .nav-link.active {
+  background-color: rgba(7, 42, 99, 0.95); /* 更深藏藍 */
+  color: #fff !important;
+  border-radius: 6px;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  transition: background-color 160ms ease-in-out, color 160ms ease-in-out;
+}
+
+/* 若希望只有滑鼠靠近單一連結改變，可使用以下規則（目前為整個 navbar 懸停已實作） */
+.navbar-navy .nav-link:hover {
+  background-color: rgba(7, 42, 99, 0.85);
+  color: #fff;
+  border-radius: 6px;
+}

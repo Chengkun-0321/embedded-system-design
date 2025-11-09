@@ -1,35 +1,113 @@
 HW2/                 # 專案根目錄
 ├── web/                   # 後端 (Node.js + Express API)
+│   ├── .DS_Store
 │   ├── node_modules/      # 後端套件 (自動生成)
-│   ├── app.js             # Express 伺服器入口
+│   ├── app.js             # Express 伺服器入口 (包含 /api/username, /api/search 等路由)
 │   ├── package.json       # 後端相依套件 & scripts
-│   └── package-lock.json  # 後端套件版本鎖定
+│   ├── package-lock.json  # 後端套件版本鎖定
+│   └── data/
+│       └── 0_20000.csv    # 搜尋資料來源 (CSV)
+│   └── services/
+│       └── searchService.js
 │
 ├── web-mgt/               # 前端 (React)
+│   ├── .DS_Store
 │   ├── node_modules/      # 前端套件 (自動生成)
-│   ├── public/            # 靜態檔案 (index.html, 圖片等)
+│   ├── public/            # 靜態檔案 (index.html, manifest, robots)
+│   │   ├── index.html
+│   │   ├── manifest.json
+│   │   └── robots.txt
 │   ├── src/               # React 原始碼
-│   │   ├── App.js         # 主畫面組件
-│   │   ├── index.js       # React 入口檔案
-│   │   └── components/    # 可放自訂 React 元件
-│   ├── package.json       # 前端相依套件 & scripts (含 proxy)
+│   │   ├── App.css
+│   │   ├── App.js
+│   │   ├── App.test.js
+│   │   ├── index.css
+│   │   ├── index.js
+│   │   ├── reportWebVitals.js
+│   │   ├── setupTests.js
+│   │   ├── components/
+│   │   │   ├── Footer.js
+│   │   │   ├── index.js
+│   │   │   └── Navbar.js
+│   │   └── pages/
+│   │       ├── Home.js
+│   │       ├── index.js
+│   │       ├── page1.js
+│   │       └── page2.js
+│   ├── package.json       # 前端相依套件 & scripts (含 proxy 到 http://localhost:4000)
 │   └── package-lock.json  # 前端套件版本鎖定
 │
 ├── node_modules/          # root 用到的套件 (例如 concurrently)
 ├── package.json           # root 的 scripts (同時啟動前後端)
-└── package-lock.json      # root 套件版本鎖定
+├── package-lock.json      # root 套件版本鎖定
+├── 執行指令.txt           # 專案啟動與測試說明
+├── 狀態碼.txt             # 回傳或錯誤碼對照
+└── 資料夾結構.txt         # 專案檔案結構（此檔）
 
 
 📌 說明
 • web/
-  • 負責 API
-  • 用 Express 建立後端服務
-  • npm run dev → 自動重啟（nodemon）
-  • npm start → 正式模式
+  • 負責 API (Express)
+  • 包含路由範例：`/api/username`、`/api/search`
+  • `npm run dev` → 自動重啟（nodemon）
+  • `npm start` → 正式模式
 • web-mgt/
   • 負責網頁 UI (React)
-  • npm start → 跑開發伺服器 (http://localhost:3000)
-  • proxy 指到 http://localhost:4000 來串接後端
+  • `npm start` → 跑開發伺服器 (http://localhost:3000)
+  • `package.json` 中 `proxy` 指向 `http://localhost:4000`，以方便開發時跨域轉發
 • root (HW2/)
-  • 用 concurrently 同時啟動前後端
-  • npm run dev → 開發模式：前端+後端一起跑
+  • 用 `concurrently` 同時啟動前後端
+  • `npm run dev` → 開發模式：前端+後端一起跑
+
+備註：
+- `web` 是主要的後端程式所在資料夾，`data/0_20000.csv` 為搜尋資料來源。
+- `web-mgt/src/pages/page1.js` 包含搜尋 UI，開發模式時 React StrictMode 可能會導致某些 useEffect 觸發兩次（僅開發時）。
+
+快速啟動（在 Mac / zsh）
+1) 安裝相依套件（在專案根目錄）
+   npm install
+
+2) 若要同時啟動前後端（concurrently）
+   npm run dev
+
+3) 單獨啟動後端
+   cd web
+   npm run dev   # 或 npm start（正式模式）
+
+4) 單獨啟動前端
+   cd web-mgt
+   npm start     # 開發伺服器在 http://localhost:3000
+
+常見錯誤與處理建議
+- Proxy 錯誤 (ECONNREFUSED / ECONNRESET)
+  • 症狀：前端 console 顯示 "Could not proxy request /api/... from localhost:3000 to http://localhost:4000"。
+  • 原因：後端伺服器未啟動或在不同埠，導致 proxy 無法連線。
+  • 處理：確認 `web` 在埠 4000 正常啟動；或檢查 `web-mgt/package.json` 的 `proxy` 是否正確。
+
+- React 在開發模式呼叫 API 兩次
+  • 症狀：後端 log 看到同樣的 GET 請求出現兩次（例如 `/api/username`）。
+  • 原因：React 18 在開發環境下啟用 `StrictMode`，會做「掛載 → 卸載 → 再掛載」以檢測副作用，因此在 `useEffect(..., [])` 中的副作用會被執行兩次（僅開發）。
+  • 建議：
+    - 在開發短期可移除 `React.StrictMode`（`src/index.js` 或 `src/App.js`）以避免雙重呼叫，但 production build 不會有此行為。
+    - 或在呼叫 API 的元件中使用 `useRef` 作一次性保護：
+      const didFetch = useRef(false);
+      useEffect(() => {
+        if (didFetch.current) return;
+        didFetch.current = true;
+        // fetch...
+      }, []);
+
+- /api/search 找不到路由
+  • 症狀：前端呼叫 `/api/search` 但後端回 404 或沒有回應。
+  • 建議：在 `web/app.js` 中新增 `/api/search` 路由，並以 `web/services/searchService.js` 或直接讀 `data/0_20000.csv` 來回傳搜尋結果範例。
+
+檔案與功能對照 (快速參考)
+- `web/app.js`      : 啟動 Express Server，放 API 路由（/api/username, /api/search...）
+- `web/services/searchService.js` : 搜尋邏輯（解析 CSV, 篩選關鍵字, 回傳分頁結果）
+- `web/data/0_20000.csv` : 原始資料來源（商品或關鍵字清單）
+- `web-mgt/src/pages/page1.js` : 搜尋畫面與分頁、加入購物車等 UI 行為
+- `web-mgt/package.json` : dev server proxy 設定 (proxy -> http://localhost:4000)
+
+若你希望我：
+ - 直接在 `web/app.js` 新增一個簡單的 `/api/search` 範例實作（回傳 mock 分頁資料），我可以幫你做並執行快速測試；
+ - 或把 `page1.js` 的 useEffect 加上 double-call 防護，我也可以修改該檔案。
