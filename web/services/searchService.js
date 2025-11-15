@@ -39,6 +39,16 @@ function searchFromCSV(keyword, page = 1, pageSize = 24) {
     const tokens = jieba.cut(keyword);
     logTs("🔍 斷詞結果：", tokens);
 
+    const precise = jieba.cut(keyword);
+    logTs("精確模式:", precise);
+
+    const full = jieba.cutAll(keyword);
+    logTs("全模式:", full);
+
+    const keywords = jieba.extract(keyword, 5); // 提取 5 個關鍵詞
+    const extractedWords = keywords.map((item) => item.word); // 提取關鍵字
+    logTs("關鍵詞提取:", extractedWords);
+
     const weights = {
       title: 0.5,
       categories: 2,

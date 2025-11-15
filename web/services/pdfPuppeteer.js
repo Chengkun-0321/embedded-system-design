@@ -60,7 +60,7 @@ async function generateCartPDF_HTML(cart = [], selected = []) {
               .map(
                 (item) => `
               <tr>
-                <td>${selected.includes(item.id) ? "✅" : ""}</td>
+                <td>${selected.includes(item.id) ? "" : ""}</td>
                 <td class="title">${item.title || ""}</td>
                 <td>NT$ ${item.price || 0}</td>
                 <td>${item.quantity || 1}</td>
